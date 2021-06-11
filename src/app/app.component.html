@@ -1,0 +1,36 @@
+<h1 class="title animated jackInTheBox">{{ title }}</h1>
+<ul class="animated flipInX" *ngIf="mode=='list'">
+  <p class="text-center" *ngIf="todos.length==0"><small>Não temos nenhuma tarefa hoje!</small></p>
+  <li *ngFor='let todo of todos'>
+    {{ todo.taskText }}
+    <button (click)='remove(todo)'><i class="far fa-trash-alt"></i></button>
+    <button *ngIf='!todo.done' (click)='markAsDone(todo)'><i class="far fa-check-circle"></i></button>
+    <button *ngIf='todo.done' (click)='markAsUndone(todo)'><i class="fas fa-check-circle"></i></button>
+  </li>
+  <!-- *ngFor é a forma de construirmos um for no angular e usuá-lo em uma tag html -->
+  <!-- 'let' é a palavra reservada para definirmos uma variável. Assumiu o lugar da palavra reservada 'var'-->
+  <!-- let todo of todos vai selecionar cada um dos itens da nossa lista chamada todos -->
+</ul>
+
+<div id="modal" *ngIf="mode=='add'" class="animated flipInX">
+  <h1 class="text-center">Nova Tarefa</h1>
+  <form [formGroup]="form">
+      <input type="text" placeholder="Escreva a Tarefa" maxlength="40" formControlName="title">
+      <small class="danger" *ngIf="form.controls.title.invalid && !form.controls.title.pristine">
+        Este campo deve conter entre 3 e 40 caracteres<br>
+      </small>
+      <p class="text-center">
+        <button class="button" [disabled]="form.invalid" (click)="add()"><i class="far fa-save"></i> Salvar</button>
+      </p>
+  </form>
+  <br><br>
+</div>
+
+<button class="add-button animated fadeInUp button" (click)="changeMode('add')" *ngIf="mode=='list'"> 
+  <i class="fas fa-plus-circle"></i>
+  NOVA TAREFA
+</button>
+<button class="add-button animated fadeInUp button" (click)="changeMode('list')" *ngIf="mode=='add'"> 
+  <i class="fas fa-times"></i>
+  CANCELAR
+</button>
